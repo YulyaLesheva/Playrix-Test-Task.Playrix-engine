@@ -28,12 +28,16 @@ private:
 	float _timer;
 	float _newTimer;
 	float _scale;
+	float _scaleBomb;
 	float _angle;
+	float _vectorLegth;
 	IPoint circlePoint;
+	IPoint _bombPoint;
 	Render::Texture* _tex1;
 	Render::Texture* _tex2;
 	Render::Texture* _tex3;
 	Render::Texture* _tex4;
+	Render::Texture* _tex5;
 
 	math::Vector3 _startPos;
 	math::Vector3 _velocityVec;

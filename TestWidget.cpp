@@ -9,10 +9,13 @@ TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	, _angle(0)
 	, _eff(NULL)
 	, _scale(0.f)
+	,_scaleBomb()
 	, _startPos(0, 0, 0)
 	, _velocityVec(1, 0, 0)
+	, _vectorLegth(0)
 	, _finalPos(500, 500, 0)
 	, circlePoint(1, 0)
+	, _bombPoint(500, 0)
 	
 {
 	Init();
@@ -23,7 +26,8 @@ void TestWidget::Init()
 	_tex1 = Core::resourceManager.Get<Render::Texture>("btnStart_Text");
 	_tex2 = Core::resourceManager.Get<Render::Texture>("Circle"); 
 	_tex3 = Core::resourceManager.Get<Render::Texture>("Star");
-	_tex4 = Core::resourceManager.Get<Render::Texture>("Circle");
+	_tex4 = Core::resourceManager.Get<Render::Texture>("Target");
+	_tex5 = Core::resourceManager.Get<Render::Texture>("Bomb");
 
 	_curTex = 0;
 	_angle = 0;
@@ -168,6 +172,10 @@ void TestWidget::Draw()
 	circlePoint = getPosition();
 	Render::device.PopMatrix();
 	
+	Render::device.PushMatrix();
+	Render::device.MatrixTranslate(_bombPoint);
+	_tex5->Draw();
+	Render::device.PopMatrix();
 }
 
 void TestWidget::Update(float dt)
@@ -212,6 +220,13 @@ void TestWidget::Update(float dt)
 
 	if (_startPos.x > 1000) {
 		_startPos.x = 0;
+	}
+
+	math::Vector3 twoPoints = math::Vector3(_startPos.x - _bombPoint.x, _startPos.y - _bombPoint.y, 0);
+	_vectorLegth = twoPoints.Length();
+
+	if (_vectorLegth <= 100) {
+		_bombPoint = IPoint(0, 0);
 	}
 
 }
