@@ -28,6 +28,7 @@ void TestWidget::Init()
 	_tex3 = Core::resourceManager.Get<Render::Texture>("Star");
 	_tex4 = Core::resourceManager.Get<Render::Texture>("Target");
 	_tex5 = Core::resourceManager.Get<Render::Texture>("Bomb");
+	_tex6 = Core::resourceManager.Get<Render::Texture>("Target");
 
 	_curTex = 0;
 	_angle = 0;
@@ -176,6 +177,17 @@ void TestWidget::Draw()
 	Render::device.MatrixTranslate(_bombPoint);
 	_tex5->Draw();
 	Render::device.PopMatrix();
+
+	auto width = _tex6->Width();
+	auto height = _tex6->Height();
+
+	Render::device.PushMatrix();
+	Render::device.MatrixTranslate(-width *0.5, - height * 0.5, 0.0f);
+	Render::device.MatrixTranslate(1024 * 0.5, 768 * 0.5, 0);
+	_tex6->Draw();
+	Render::device.PopMatrix();
+
+	
 }
 
 void TestWidget::Update(float dt)

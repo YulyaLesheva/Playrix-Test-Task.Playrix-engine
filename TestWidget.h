@@ -38,6 +38,8 @@ private:
 	Render::Texture* _tex3;
 	Render::Texture* _tex4;
 	Render::Texture* _tex5;
+	Render::Texture* _tex6;
+
 
 	math::Vector3 _startPos;
 	math::Vector3 _velocityVec;
