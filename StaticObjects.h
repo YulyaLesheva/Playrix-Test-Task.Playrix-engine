@@ -1,12 +1,12 @@
 #pragma once
 
-class StaticObjects 
+class StaticObjects
 {
 public:
-	StaticObjects(Render::Texture* tex);
+	StaticObjects(Render::Texture* tex, IPoint &position, float scale);
 	~StaticObjects();
 	
-	static std::unique_ptr<StaticObjects> StaticObjects::createSprite(Render::Texture* tex);
+	static std::unique_ptr<StaticObjects> StaticObjects::createSprite(Render::Texture* tex, IPoint &position, float scale);
 	void Draw();
 private:
 
@@ -14,6 +14,8 @@ private:
 	{
 	public:
 		Render::Texture* _tex;
+		IPoint _position;
+		float _scale;
 	private:
 		
 	};

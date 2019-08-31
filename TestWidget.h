@@ -4,7 +4,9 @@
 /// Виджет - основной визуальный элемент на экране.
 /// Он отрисовывает себя, а также может содержать другие виджеты.
 ///
+class Background;
 class StaticObjects;
+class Targets;
 class TestWidget : public GUI::Widget
 {
 public:
@@ -16,13 +18,14 @@ public:
 	bool MouseDown(const IPoint& mouse_pos) override;
 	void MouseMove(const IPoint& mouse_pos) override;
 	void MouseUp(const IPoint& mouse_pos) override;
-	std::unique_ptr <StaticObjects> _bg;
-
+	std::unique_ptr <Background> _bg;
+	std::unique_ptr <StaticObjects> _stand;
+	std::unique_ptr <StaticObjects> _clock;
+	std::unique_ptr <Targets> _target;
+	std::unique_ptr <Targets> _target1;
 private:
 	void Init();
 
 private:
-	float _timer;
-	Render::Texture* _tex1;
 	Render::Texture* _background;
 };
