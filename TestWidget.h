@@ -14,7 +14,6 @@ public:
 
 	void Draw() override;
 	void Update(float dt) override;
-	
 	bool MouseDown(const IPoint& mouse_pos) override;
 	void MouseMove(const IPoint& mouse_pos) override;
 	void MouseUp(const IPoint& mouse_pos) override;
@@ -28,4 +27,8 @@ private:
 
 private:
 	Render::Texture* _background;
+	int _screenHeigth;
+	int _screenWidth;
+	void createTargets();
+
 };
