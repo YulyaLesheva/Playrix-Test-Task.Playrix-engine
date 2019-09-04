@@ -7,6 +7,7 @@
 class Background;
 class StaticObjects;
 class Targets;
+class Cannon;
 class TestWidget : public GUI::Widget
 {
 public:
@@ -22,6 +23,7 @@ public:
 	std::unique_ptr <StaticObjects> _clock;
 	std::unique_ptr <Targets> _target;
 	std::unique_ptr <Targets> _target1;
+	std::unique_ptr <Cannon> _cannon;
 private:
 	void Init();
 
