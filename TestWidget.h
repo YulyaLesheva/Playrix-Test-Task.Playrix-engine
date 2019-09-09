@@ -8,6 +8,8 @@ class Background;
 class StaticObjects;
 class Targets;
 class Cannon;
+class Cannonball;
+
 class TestWidget : public GUI::Widget
 {
 public:
@@ -24,12 +26,12 @@ public:
 	std::unique_ptr <Targets> _target;
 	std::unique_ptr <Targets> _target1;
 	std::unique_ptr <Cannon> _cannon;
+	std::unique_ptr <Cannonball> _cannonball;
+
 private:
 	void Init();
 
 private:
-	Render::Texture* _background;
-	int _screenHeigth;
 	int _screenWidth;
 	void createTargets();
 
