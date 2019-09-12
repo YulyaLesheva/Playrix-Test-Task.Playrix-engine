@@ -9,6 +9,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void MoveTo(const IPoint &mouse_pos);
+	IRect GetRectangle();
 private:
 	class Call
 	{
@@ -17,6 +18,8 @@ private:
 		FPoint _position;
 		FPoint _dt;
 		FPoint _startPosition, _scalePix;
+		IRect _rect;
+		bool _needToRemove;
 
 	
 	};

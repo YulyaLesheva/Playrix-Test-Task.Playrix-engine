@@ -8,7 +8,8 @@
 #include "Cannonball.h"
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
-	: Widget(name)
+	: Widget(name),
+	fuckPosition(0,0)
 {
 	Init();
 }
@@ -26,9 +27,8 @@ void TestWidget::Init()
 	_stand = StaticObjects::createSprite(Core::resourceManager.Get<Render::Texture>("Stand"), IPoint(Render::device.Width() * 0.5f, 0.f), 0.17f);
 	_clock = StaticObjects::createSprite(Core::resourceManager.Get<Render::Texture>("Clock"), IPoint(Render::device.Width() * 0.5f+120, 445), 0.5f);
 	_cannon = Cannon::createSprite(Core::resourceManager.Get<Render::Texture>("Cannon"), IPoint(Render::device.Width() * 0.5f, 50), 1.0f);
-	_cannonball = Cannonball::createSprite(Core::resourceManager.Get<Render::Texture>("Cannonball"), IPoint(Render::device.Width() * 0.5f, Render::device.Height() * 0.5f));
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 1; i++) {
 		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("YellowTarget"),
 			IPoint(RandomGenerate::RandomInteger(Render::device.Width()), RandomGenerate::RandomInteger(Render::device.Height())),
 			IPoint(RandomGenerate::RandomVector(), RandomGenerate::RandomVector())));
@@ -40,6 +40,7 @@ void TestWidget::Init()
 			IPoint(RandomGenerate::RandomVector(), RandomGenerate::RandomVector())));
 	}
 
+	fuck = Core::resourceManager.Get<Render::Texture>("YellowTarget");
 
 }
 
@@ -59,6 +60,11 @@ void TestWidget::Draw()
 	for (auto& cannonball : _cannonballs) {
 		cannonball->Draw();
 	}
+
+	Render::device.PushMatrix();
+	Render::device.MatrixTranslate(fuckPosition);
+	fuck->Draw();
+	Render::device.PopMatrix();
 }
 
 void TestWidget::Update(float dt)
@@ -70,7 +76,11 @@ void TestWidget::Update(float dt)
 	for (auto& cannonball : _cannonballs) {
 		cannonball->Update(dt);
 	}
-	
+
+	CheckCollisions();
+	ObjectsRemoving();
+
+
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
@@ -98,3 +108,34 @@ void TestWidget::createTargets() {
 	
 	
 }
+
+void TestWidget::CheckCollisions() {
+	
+	for (auto& cannonball : _cannonballs) {
+		auto rectC = cannonball->GetRectangle();
+		for (auto i = _targets.begin(); i!= _targets.end(); ++i)
+			if (rectC.Intersects((*i)->GetRectangle())) {
+				fuckPosition.x += 3;
+				fuckPosition.y += 3;
+				(*i)->MakeNeedToRemoveTrue();
+				check = (*i)->IsNeededToRemove();
+			}
+	}
+}
+
+void TestWidget::ObjectsRemoving() {
+	
+	//проверить состояние объекта
+	///если объект равно нидед то ремув
+		///ремув
+	auto newEnd = std::remove_if(_targets.begin(), _targets.end(), [&](const std::unique_ptr<Targets>& targetPtr) {
+		return targetPtr->IsNeededToRemove();
+	});
+	if (newEnd != _targets.end())
+		_targets.resize(newEnd - _targets.begin());
+	
+}
+
+
+
+

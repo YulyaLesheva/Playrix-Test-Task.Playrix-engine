@@ -12,7 +12,7 @@ Cannonball::Cannonball(Render::Texture *tex, const IPoint &position) {
 	call->_tex = tex;
 	call->_position = position;
 	call->_startPosition = position;
-
+	call->_needToRemove = false;
 }
 
 Cannonball::~Cannonball() {
@@ -50,3 +50,14 @@ void Cannonball::MoveTo(const IPoint &mouse_pos) {
 
 	call->_position = call->_scalePix + 1 * call->_dt;
 }
+
+IRect Cannonball::GetRectangle() {
+	
+	IRect rect = call->_tex->getBitmapRect();
+	call->_rect = IRect(call->_position.x, call->_position.y, call->_tex->Width()*0.15, call->_tex->Height()*0.15);
+
+	return call->_rect;
+}
+
+
+

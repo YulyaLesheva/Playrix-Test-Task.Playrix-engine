@@ -11,7 +11,7 @@ Targets::Targets(Render::Texture *tex, IPoint position, IPoint direction) {
 	call->_tex = tex;
 	call->_position = position;
 	call->_direction = direction;
-
+	call->_needToRemove = false;
 
 }
 
@@ -42,4 +42,22 @@ void Targets::Update(float dt) {
 		call->_direction.y = -call->_direction.y;
 	}
 
+}
+
+IRect Targets::GetRectangle() {
+
+	IRect rect = call->_tex->getBitmapRect();
+	call->_rect = IRect(call->_position.x, call->_position.y, call->_tex->Width()*0.15, call->_tex->Height()*0.15);
+
+	return call->_rect;
+}
+
+void Targets::MakeNeedToRemoveTrue() {
+
+	call->_needToRemove = true;
+}
+
+bool Targets::IsNeededToRemove() const {
+
+	return call->_needToRemove;
 }
