@@ -35,20 +35,24 @@ void Cannonball::Update(float dt) {
 }
 
 void Cannonball::MoveTo(const IPoint &mouse_pos) {
-	
-	float angle = atan2(mouse_pos.y,mouse_pos.x);
-	call->_scalePix = call->_startPosition + FPoint(cos(angle), sin(angle));
-	call->_dt = call->_scalePix - mouse_pos;
-	float theta = atan(call->_dt.y/call->_dt.x);
-	call->_dt.x = 15 * cos(theta);
-	call->_dt.y = 15 * sin(theta);
 
-	if (mouse_pos.x < call->_position.x) {
-		call->_dt.x = -call->_dt.x;
-		call->_dt.y = -call->_dt.y;
+	if (call->_needToRemove = true) {
+		call->_needToRemove = false;
+
+		float angle = atan2(mouse_pos.y, mouse_pos.x);
+		call->_scalePix = call->_startPosition + FPoint(cos(angle), sin(angle));
+		call->_dt = call->_scalePix - mouse_pos;
+		float theta = atan(call->_dt.y / call->_dt.x);
+		call->_dt.x = 15 * cos(theta);
+		call->_dt.y = 15 * sin(theta);
+
+		if (mouse_pos.x < call->_position.x) {
+			call->_dt.x = -call->_dt.x;
+			call->_dt.y = -call->_dt.y;
+		}
+
+		call->_position = call->_scalePix + 1 * call->_dt;
 	}
-
-	call->_position = call->_scalePix + 1 * call->_dt;
 }
 
 IRect Cannonball::GetRectangle() {
@@ -61,3 +65,10 @@ IRect Cannonball::GetRectangle() {
 
 
 
+void Cannonball::MakeNeedToRemoveTrue() {
+	call->_needToRemove = true;
+}
+
+bool Cannonball::IsNeededToRemove() const {
+	return call->_needToRemove;
+}

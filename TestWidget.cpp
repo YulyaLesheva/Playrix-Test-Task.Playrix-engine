@@ -46,7 +46,6 @@ void TestWidget::Init()
 
 void TestWidget::Draw()
 {
-
 	_bg->Draw();
 	_clock->Draw();
 	_stand->Draw();
@@ -55,7 +54,6 @@ void TestWidget::Draw()
 	for (auto& target : _targets) {
 		target->Draw();
 	}
-
 
 	for (auto& cannonball : _cannonballs) {
 		cannonball->Draw();
@@ -79,15 +77,10 @@ void TestWidget::Update(float dt)
 
 	CheckCollisions();
 	ObjectsRemoving();
-
-
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
 {
-
-	///if (mouse_pos.x > 300 && mouse_pos.x < 600) return true;
-
 	_cannonballs.push_back(Cannonball::createSprite(Core::resourceManager.Get<Render::Texture>("Cannonball"), IPoint(Render::device.Width() * 0.5f, 35)));
 	_cannonballs.back()->MoveTo(mouse_pos);
 	return false;
@@ -103,12 +96,6 @@ void TestWidget::MouseUp(const IPoint &mouse_pos)
 	
 }
 
-void TestWidget::createTargets() {
-
-	
-	
-}
-
 void TestWidget::CheckCollisions() {
 	
 	for (auto& cannonball : _cannonballs) {
@@ -117,8 +104,8 @@ void TestWidget::CheckCollisions() {
 			if (rectC.Intersects((*i)->GetRectangle())) {
 				fuckPosition.x += 3;
 				fuckPosition.y += 3;
+				cannonball->MakeNeedToRemoveTrue();
 				(*i)->MakeNeedToRemoveTrue();
-				check = (*i)->IsNeededToRemove();
 			}
 	}
 }
@@ -133,7 +120,12 @@ void TestWidget::ObjectsRemoving() {
 	});
 	if (newEnd != _targets.end())
 		_targets.resize(newEnd - _targets.begin());
-	
+
+	auto newEnd1 = std::remove_if(_cannonballs.begin(), _cannonballs.end(), [&](const std::unique_ptr<Cannonball>& cbPtr) {
+		return cbPtr->IsNeededToRemove();
+	});
+	if (newEnd1 != _cannonballs.end())
+		_cannonballs.resize(newEnd1 - _cannonballs.begin());
 }
 
 
