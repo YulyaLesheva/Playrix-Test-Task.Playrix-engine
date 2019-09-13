@@ -31,6 +31,13 @@ void Cannonball::Draw() {
 
 void Cannonball::Update(float dt) {
 
+	if (call->_position.x > Render::device.Width() + call->_tex->_bitmap_width*0.25 || call->_position.x < - call->_tex->_bitmap_width*0.25) {
+		call->_needToRemove = true;
+	}
+
+	if (call->_position.y > Render::device.Height() + call->_tex->_bitmap_height*0.25 || call->_position.y < -call->_tex->_bitmap_height*0.25) {
+		call->_needToRemove = true;
+	}
 	call->_position += call->_dt;
 }
 

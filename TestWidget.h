@@ -9,6 +9,7 @@ class StaticObjects;
 class Targets;
 class Cannon;
 class Cannonball;
+class Aim;
 
 class TestWidget : public GUI::Widget
 {
@@ -25,6 +26,7 @@ public:
 	std::unique_ptr <StaticObjects> _stand;
 	std::unique_ptr <StaticObjects> _clock;
 	std::unique_ptr <Cannon> _cannon;
+	std::unique_ptr <Aim> _aim;
 	Render::Texture* fuck;
 	bool check;
 	void ObjectsRemoving();
@@ -33,6 +35,5 @@ private:
 
 private:
 	int _screenWidth;
-	void createTargets();
 
 };

@@ -6,6 +6,7 @@
 #include "RandomGenerate.h"
 #include "Cannon.h"
 #include "Cannonball.h"
+#include "Aim.h"
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
@@ -27,6 +28,7 @@ void TestWidget::Init()
 	_stand = StaticObjects::createSprite(Core::resourceManager.Get<Render::Texture>("Stand"), IPoint(Render::device.Width() * 0.5f, 0.f), 0.17f);
 	_clock = StaticObjects::createSprite(Core::resourceManager.Get<Render::Texture>("Clock"), IPoint(Render::device.Width() * 0.5f+120, 445), 0.5f);
 	_cannon = Cannon::createSprite(Core::resourceManager.Get<Render::Texture>("Cannon"), IPoint(Render::device.Width() * 0.5f, 50), 1.0f);
+	_aim = Aim::CreateSprite(Core::resourceManager.Get<Render::Texture>("Aim"));
 
 	for (int i = 0; i < 1; i++) {
 		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("YellowTarget"),
@@ -41,7 +43,6 @@ void TestWidget::Init()
 	}
 
 	fuck = Core::resourceManager.Get<Render::Texture>("YellowTarget");
-
 }
 
 void TestWidget::Draw()
@@ -50,6 +51,7 @@ void TestWidget::Draw()
 	_clock->Draw();
 	_stand->Draw();
 	_cannon->Draw();
+	_aim->Draw();
 
 	for (auto& target : _targets) {
 		target->Draw();
@@ -63,6 +65,10 @@ void TestWidget::Draw()
 	Render::device.MatrixTranslate(fuckPosition);
 	fuck->Draw();
 	Render::device.PopMatrix();
+
+
+	Render::BindFont("arial");
+	Render::PrintString(924 + 100 / 2, 35, utils::lexical_cast(12) + ", " + utils::lexical_cast(12), 1.f, CenterAlign);
 }
 
 void TestWidget::Update(float dt)
