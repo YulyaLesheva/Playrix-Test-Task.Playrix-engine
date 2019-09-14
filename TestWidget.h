@@ -10,6 +10,7 @@ class Targets;
 class Cannon;
 class Cannonball;
 class Aim;
+class Labels;
 
 class TestWidget : public GUI::Widget
 {
@@ -27,9 +28,11 @@ public:
 	std::unique_ptr <StaticObjects> _clock;
 	std::unique_ptr <Cannon> _cannon;
 	std::unique_ptr <Aim> _aim;
+	std::unique_ptr <Labels> _timer;
 	Render::Texture* fuck;
 	bool check;
 	void ObjectsRemoving();
+	int fuckyou;
 private:
 	void Init();
 

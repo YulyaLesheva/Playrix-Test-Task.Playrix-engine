@@ -7,10 +7,12 @@
 #include "Cannon.h"
 #include "Cannonball.h"
 #include "Aim.h"
+#include "Labels.h"
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
-	fuckPosition(0,0)
+	fuckPosition(0,0),
+	fuckyou(100)
 {
 	Init();
 }
@@ -29,6 +31,7 @@ void TestWidget::Init()
 	_clock = StaticObjects::createSprite(Core::resourceManager.Get<Render::Texture>("Clock"), IPoint(Render::device.Width() * 0.5f+120, 445), 0.5f);
 	_cannon = Cannon::createSprite(Core::resourceManager.Get<Render::Texture>("Cannon"), IPoint(Render::device.Width() * 0.5f, 50), 1.0f);
 	_aim = Aim::CreateSprite(Core::resourceManager.Get<Render::Texture>("Aim"));
+	_timer = Labels::CreateSprite(122, IPoint(500, 300));
 
 	for (int i = 0; i < 1; i++) {
 		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("YellowTarget"),
@@ -43,6 +46,7 @@ void TestWidget::Init()
 	}
 
 	fuck = Core::resourceManager.Get<Render::Texture>("YellowTarget");
+	
 }
 
 void TestWidget::Draw()
@@ -52,6 +56,7 @@ void TestWidget::Draw()
 	_stand->Draw();
 	_cannon->Draw();
 	_aim->Draw();
+	_timer->Draw();
 
 	for (auto& target : _targets) {
 		target->Draw();
@@ -67,8 +72,8 @@ void TestWidget::Draw()
 	Render::device.PopMatrix();
 
 
-	Render::BindFont("arial");
-	Render::PrintString(924 + 100 / 2, 35, utils::lexical_cast(12) + ", " + utils::lexical_cast(12), 1.f, CenterAlign);
+	///Render::BindFont("arial");
+	///Render::PrintString(FPoint(300, 300), "Ti pidor", 1.f, CenterAlign);
 }
 
 void TestWidget::Update(float dt)
@@ -83,6 +88,19 @@ void TestWidget::Update(float dt)
 
 	CheckCollisions();
 	ObjectsRemoving();
+	
+	
+
+	for (int i = 0; i < 10; i++) {
+
+		fuckPosition = fuckPosition;
+		Sleep(fuckyou);
+		fuckPosition.x += 5;
+		if (fuckPosition.x > 600) {
+			fuckyou = 0;
+			break;
+		}
+	}
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
@@ -108,8 +126,8 @@ void TestWidget::CheckCollisions() {
 		auto rectC = cannonball->GetRectangle();
 		for (auto i = _targets.begin(); i!= _targets.end(); ++i)
 			if (rectC.Intersects((*i)->GetRectangle())) {
-				fuckPosition.x += 3;
-				fuckPosition.y += 3;
+				///fuckPosition.x += 3;
+				///fuckPosition.y += 3;
 				cannonball->MakeNeedToRemoveTrue();
 				(*i)->MakeNeedToRemoveTrue();
 			}
