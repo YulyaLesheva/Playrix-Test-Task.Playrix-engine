@@ -33,6 +33,11 @@ public:
 	bool check;
 	void ObjectsRemoving();
 	int fuckyou;
+	void timerEvent();
+
+	float eventTimer;
+	float currentCounter;
+	int frameCounter;
 private:
 	void Init();
 

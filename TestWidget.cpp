@@ -12,7 +12,10 @@
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
 	fuckPosition(0,0),
-	fuckyou(100)
+	fuckyou(100),
+	eventTimer(5.f),
+	currentCounter (0.f),
+	frameCounter(0)
 {
 	Init();
 }
@@ -31,7 +34,7 @@ void TestWidget::Init()
 	_clock = StaticObjects::createSprite(Core::resourceManager.Get<Render::Texture>("Clock"), IPoint(Render::device.Width() * 0.5f+120, 445), 0.5f);
 	_cannon = Cannon::createSprite(Core::resourceManager.Get<Render::Texture>("Cannon"), IPoint(Render::device.Width() * 0.5f, 50), 1.0f);
 	_aim = Aim::CreateSprite(Core::resourceManager.Get<Render::Texture>("Aim"));
-	_timer = Labels::CreateSprite(122, IPoint(500, 300));
+	_timer = Labels::CreateSprite(0, IPoint(500, 300));
 
 	for (int i = 0; i < 1; i++) {
 		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("YellowTarget"),
@@ -88,19 +91,19 @@ void TestWidget::Update(float dt)
 
 	CheckCollisions();
 	ObjectsRemoving();
-	
-	
+	_timer->Update(dt);
 
-	for (int i = 0; i < 10; i++) {
-
-		fuckPosition = fuckPosition;
-		Sleep(fuckyou);
-		fuckPosition.x += 5;
-		if (fuckPosition.x > 600) {
-			fuckyou = 0;
-			break;
-		}
+	currentCounter += dt;
+	frameCounter ++;
+	if (currentCounter >= eventTimer) {
+		currentCounter = currentCounter - eventTimer;
+		timerEvent();
 	}
+	
+}
+void TestWidget::timerEvent() {
+	frameCounter = 0;
+	fuckPosition.x += 15;
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
@@ -128,6 +131,7 @@ void TestWidget::CheckCollisions() {
 			if (rectC.Intersects((*i)->GetRectangle())) {
 				///fuckPosition.x += 3;
 				///fuckPosition.y += 3;
+				///_timer->increaseScore(10);
 				cannonball->MakeNeedToRemoveTrue();
 				(*i)->MakeNeedToRemoveTrue();
 			}
