@@ -10,8 +10,9 @@ class Targets;
 class Cannon;
 class Cannonball;
 class Aim;
-class Labels;
-
+class Restart;
+class Timer;
+class Score;
 class TestWidget : public GUI::Widget
 {
 public:
@@ -28,16 +29,15 @@ public:
 	std::unique_ptr <StaticObjects> _clock;
 	std::unique_ptr <Cannon> _cannon;
 	std::unique_ptr <Aim> _aim;
-	std::unique_ptr <Labels> _timer;
+	std::unique_ptr <Timer> _timer;
+	std::unique_ptr <Score> _score;
+	std::unique_ptr <Restart> _restart;
+
 	Render::Texture* fuck;
 	bool check;
 	void ObjectsRemoving();
 	int fuckyou;
-	void timerEvent();
 
-	float eventTimer;
-	float currentCounter;
-	int frameCounter;
 private:
 	void Init();
 

@@ -7,15 +7,15 @@
 #include "Cannon.h"
 #include "Cannonball.h"
 #include "Aim.h"
-#include "Labels.h"
+#include "Timer.h"
+#include "Score.h"
+#include "Restart.h"
+
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
 	fuckPosition(0,0),
-	fuckyou(100),
-	eventTimer(5.f),
-	currentCounter (0.f),
-	frameCounter(0)
+	fuckyou(100)
 {
 	Init();
 }
@@ -26,7 +26,6 @@ TargetVector _targets;
 using CannonballVector = std::vector<std::unique_ptr<Cannonball>>;
 CannonballVector _cannonballs;
 
-
 void TestWidget::Init()
 {
 	_bg = Background::createSprite(Core::resourceManager.Get<Render::Texture>("Background"));
@@ -34,8 +33,10 @@ void TestWidget::Init()
 	_clock = StaticObjects::createSprite(Core::resourceManager.Get<Render::Texture>("Clock"), IPoint(Render::device.Width() * 0.5f+120, 445), 0.5f);
 	_cannon = Cannon::createSprite(Core::resourceManager.Get<Render::Texture>("Cannon"), IPoint(Render::device.Width() * 0.5f, 50), 1.0f);
 	_aim = Aim::CreateSprite(Core::resourceManager.Get<Render::Texture>("Aim"));
-	_timer = Labels::CreateSprite(0, IPoint(500, 300));
-
+	_timer = Timer::CreateSprite(30, IPoint(975,750));
+	_score = Score::CreateScore(IPoint(70, 750));
+	_restart = Restart::CreateSprite(Core::resourceManager.Get<Render::Texture>("Restart"), IPoint(Render::device.Width() * 0.5f, 100));
+	
 	for (int i = 0; i < 1; i++) {
 		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("YellowTarget"),
 			IPoint(RandomGenerate::RandomInteger(Render::device.Width()), RandomGenerate::RandomInteger(Render::device.Height())),
@@ -49,7 +50,6 @@ void TestWidget::Init()
 	}
 
 	fuck = Core::resourceManager.Get<Render::Texture>("YellowTarget");
-	
 }
 
 void TestWidget::Draw()
@@ -60,6 +60,8 @@ void TestWidget::Draw()
 	_cannon->Draw();
 	_aim->Draw();
 	_timer->Draw();
+	_score->Draw();
+	_restart->Draw();
 
 	for (auto& target : _targets) {
 		target->Draw();
@@ -68,12 +70,15 @@ void TestWidget::Draw()
 	for (auto& cannonball : _cannonballs) {
 		cannonball->Draw();
 	}
+	
+	IPoint mouse_pos = Core::mainInput.GetMousePos();
+	Render::BindFont("arial");
+	Render::PrintString(924 + 100 / 2, 35, utils::lexical_cast(mouse_pos.x) + ", " + utils::lexical_cast(mouse_pos.y), 1.f, CenterAlign);
 
-	Render::device.PushMatrix();
-	Render::device.MatrixTranslate(fuckPosition);
-	fuck->Draw();
-	Render::device.PopMatrix();
-
+	///Render::device.PushMatrix();
+	///Render::device.MatrixTranslate(fuckPosition);
+	///fuck->Draw();
+	///Render::device.PopMatrix();
 
 	///Render::BindFont("arial");
 	///Render::PrintString(FPoint(300, 300), "Ti pidor", 1.f, CenterAlign);
@@ -92,18 +97,6 @@ void TestWidget::Update(float dt)
 	CheckCollisions();
 	ObjectsRemoving();
 	_timer->Update(dt);
-
-	currentCounter += dt;
-	frameCounter ++;
-	if (currentCounter >= eventTimer) {
-		currentCounter = currentCounter - eventTimer;
-		timerEvent();
-	}
-	
-}
-void TestWidget::timerEvent() {
-	frameCounter = 0;
-	fuckPosition.x += 15;
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
@@ -129,9 +122,8 @@ void TestWidget::CheckCollisions() {
 		auto rectC = cannonball->GetRectangle();
 		for (auto i = _targets.begin(); i!= _targets.end(); ++i)
 			if (rectC.Intersects((*i)->GetRectangle())) {
-				///fuckPosition.x += 3;
-				///fuckPosition.y += 3;
-				///_timer->increaseScore(10);
+				_restart->MakeActive();
+				_score->IncreaseScore(100);
 				cannonball->MakeNeedToRemoveTrue();
 				(*i)->MakeNeedToRemoveTrue();
 			}
