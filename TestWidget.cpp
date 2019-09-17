@@ -7,15 +7,10 @@
 #include "Cannon.h"
 #include "Cannonball.h"
 #include "Aim.h"
-#include "Timer.h"
-#include "Score.h"
-#include "Restart.h"
 
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
-	: Widget(name),
-	fuckPosition(0,0),
-	fuckyou(100)
+	: Widget(name)
 {
 	Init();
 }
@@ -33,9 +28,7 @@ void TestWidget::Init()
 	_clock = StaticObjects::createSprite(Core::resourceManager.Get<Render::Texture>("Clock"), IPoint(Render::device.Width() * 0.5f+120, 445), 0.5f);
 	_cannon = Cannon::createSprite(Core::resourceManager.Get<Render::Texture>("Cannon"), IPoint(Render::device.Width() * 0.5f, 50), 1.0f);
 	_aim = Aim::CreateSprite(Core::resourceManager.Get<Render::Texture>("Aim"));
-	_timer = Timer::CreateSprite(30, IPoint(975,750));
-	_score = Score::CreateScore(IPoint(70, 750));
-	_restart = Restart::CreateSprite(Core::resourceManager.Get<Render::Texture>("Restart"), IPoint(Render::device.Width() * 0.5f, 100));
+
 	
 	for (int i = 0; i < 1; i++) {
 		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("YellowTarget"),
@@ -59,9 +52,6 @@ void TestWidget::Draw()
 	_stand->Draw();
 	_cannon->Draw();
 	_aim->Draw();
-	_timer->Draw();
-	_score->Draw();
-	_restart->Draw();
 
 	for (auto& target : _targets) {
 		target->Draw();
@@ -75,13 +65,6 @@ void TestWidget::Draw()
 	Render::BindFont("arial");
 	Render::PrintString(924 + 100 / 2, 35, utils::lexical_cast(mouse_pos.x) + ", " + utils::lexical_cast(mouse_pos.y), 1.f, CenterAlign);
 
-	///Render::device.PushMatrix();
-	///Render::device.MatrixTranslate(fuckPosition);
-	///fuck->Draw();
-	///Render::device.PopMatrix();
-
-	///Render::BindFont("arial");
-	///Render::PrintString(FPoint(300, 300), "Ti pidor", 1.f, CenterAlign);
 }
 
 void TestWidget::Update(float dt)
@@ -95,8 +78,8 @@ void TestWidget::Update(float dt)
 	}
 
 	CheckCollisions();
+
 	ObjectsRemoving();
-	_timer->Update(dt);
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
@@ -122,8 +105,6 @@ void TestWidget::CheckCollisions() {
 		auto rectC = cannonball->GetRectangle();
 		for (auto i = _targets.begin(); i!= _targets.end(); ++i)
 			if (rectC.Intersects((*i)->GetRectangle())) {
-				_restart->MakeActive();
-				_score->IncreaseScore(100);
 				cannonball->MakeNeedToRemoveTrue();
 				(*i)->MakeNeedToRemoveTrue();
 			}

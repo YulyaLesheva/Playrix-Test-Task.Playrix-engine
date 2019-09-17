@@ -35,3 +35,7 @@ void Score::IncreaseScore(int value) {
 	call->_score += value;
 }
 
+void Score::ResetScore() {
+
+	call->_score = 0;
+}

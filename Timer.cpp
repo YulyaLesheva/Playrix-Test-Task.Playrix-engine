@@ -13,6 +13,7 @@ Timer::Timer(int time, IPoint position) {
 	call->_position = position;
 	call->eventTimer = 1.f;
 	call->currentCounter = 0.f;
+	call->_active = true;
 
 }
 
@@ -21,10 +22,10 @@ Timer::~Timer() {
 }
 
 void Timer::Draw() {
-	
-	Render::BindFont("Fulbo");
-	Render::PrintString(call->_position, std::to_string(call->_time), 1.f, CenterAlign);
-	
+	if (call->_active) {
+		Render::BindFont("Fulbo");
+		Render::PrintString(call->_position, std::to_string(call->_time), 1.f, CenterAlign);
+	}
 }
 
 void Timer::Update(float dt) {
@@ -37,3 +38,13 @@ void Timer::Update(float dt) {
 	}
 }
 
+void Timer::ResetTimer() {
+	
+	call->_active = true;
+	call->_time = 0;
+}
+
+void Timer::makeDisactive() {
+	
+	call->_active = false;
+}
