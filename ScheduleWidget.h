@@ -10,12 +10,14 @@ public:
 	~ScheduleWidget();
 	void Draw() override;
 	void Update(float dt) override;
+	void AcceptMessage(const Message& message) override;
 	///bool MouseDown(const IPoint& mouse_pos) override;
-///	void MouseMove(const IPoint& mouse_pos) override;
+	///	void MouseMove(const IPoint& mouse_pos) override;
 	///void MouseUp(const IPoint& mouse_pos) override;
 	std::unique_ptr <Score> _score;
 	std::unique_ptr <Restart> _restart;
 	std::unique_ptr <Timer> _timer;
+
 
 
 private:

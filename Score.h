@@ -9,6 +9,7 @@ public:
 	void Draw();
 	void Update(float dt);
 	void IncreaseScore(int value);
+	int GetCurrentScore();
 	void ResetScore();
 private:
 	class Call

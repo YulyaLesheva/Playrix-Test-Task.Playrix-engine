@@ -39,3 +39,8 @@ void Score::ResetScore() {
 
 	call->_score = 0;
 }
+
+int Score::GetCurrentScore() {
+	
+	return call->_score;
+}

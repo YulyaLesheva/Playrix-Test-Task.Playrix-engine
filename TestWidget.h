@@ -21,7 +21,9 @@ public:
 	bool MouseDown(const IPoint& mouse_pos) override;
 	void MouseMove(const IPoint& mouse_pos) override;
 	void MouseUp(const IPoint& mouse_pos) override;
+	void AcceptMessage(const Message& message) override;
 	void CheckCollisions();
+	bool _running;
 	std::unique_ptr <Background> _bg;
 	std::unique_ptr <StaticObjects> _stand;
 	std::unique_ptr <StaticObjects> _clock;

@@ -10,7 +10,8 @@
 
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
-	: Widget(name)
+	: Widget(name),
+	_running(true)
 {
 	Init();
 }
@@ -84,19 +85,37 @@ void TestWidget::Update(float dt)
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
 {
-	_cannonballs.push_back(Cannonball::createSprite(Core::resourceManager.Get<Render::Texture>("Cannonball"), IPoint(Render::device.Width() * 0.5f, 35)));
-	_cannonballs.back()->MoveTo(mouse_pos);
+	if (_running) {
+		_cannonballs.push_back(Cannonball::createSprite(Core::resourceManager.Get<Render::Texture>("Cannonball"), IPoint(Render::device.Width() * 0.5f, 35)));
+		_cannonballs.back()->MoveTo(mouse_pos);
+	}
 	return false;
+
 }
 
 void TestWidget::MouseMove(const IPoint &mouse_pos)
 {
-	_cannon->Rotate();
+	if (_running) {
+		_cannon->Rotate();
+	}
+
 }
 
 void TestWidget::MouseUp(const IPoint &mouse_pos)
 {
 	
+}
+
+void TestWidget::AcceptMessage(const Message & message){
+	
+	const std::string& publisher = message.getPublisher();
+	const std::string& data = message.getData();
+
+	if (data == "StopGame") {
+		_running = false;
+		_targets.clear();
+	}
+
 }
 
 void TestWidget::CheckCollisions() {
@@ -107,6 +126,8 @@ void TestWidget::CheckCollisions() {
 			if (rectC.Intersects((*i)->GetRectangle())) {
 				cannonball->MakeNeedToRemoveTrue();
 				(*i)->MakeNeedToRemoveTrue();
+				Core::guiManager.getLayer("TestLayer")->getWidget("ScheduleWidget")->AcceptMessage(Message("AddScore", "AddScore"));
+			
 			}
 	}
 }

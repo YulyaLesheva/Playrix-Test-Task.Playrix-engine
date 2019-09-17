@@ -16,7 +16,6 @@ private:
 		IPoint _position;
 		Render::Texture* _tex;
 		bool _active;
-		
 
 	};
 	std::unique_ptr <Call> call;

@@ -48,3 +48,8 @@ void Timer::makeDisactive() {
 	
 	call->_active = false;
 }
+
+int Timer::GetCurrentTimer() {
+
+	return call->_time;
+}

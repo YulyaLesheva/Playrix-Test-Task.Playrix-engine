@@ -22,15 +22,30 @@ ScheduleWidget::~ScheduleWidget()
 }
 
 void ScheduleWidget::Draw() {
+	
 	_score->Draw();
 	_restart->Draw();
 	_timer->Draw();
-
-
 }
 
 void ScheduleWidget::Update(float dt) {
+	
 	_timer->Update(dt);
+	if (_score->GetCurrentScore() >= 300 || _timer->GetCurrentTimer() <=0) {
+		Core::guiManager.getLayer("TestLayer")->getWidget("TestWidget")->AcceptMessage(Message("StopGame", "StopGame"));
+		_timer->makeDisactive();
+		_restart->MakeActive();
+	}
 
+}
+
+void ScheduleWidget::AcceptMessage(const Message & message){
+	
+	const std::string& publisher = message.getPublisher();
+	const std::string& data = message.getData();
+	
+	if (data == "AddScore") {
+		_score->IncreaseScore(100);
+	}
 }
 

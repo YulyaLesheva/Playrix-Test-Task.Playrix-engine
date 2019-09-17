@@ -10,6 +10,7 @@ public:
 	void Update(float dt);
 	void ResetTimer();
 	void makeDisactive();
+	int GetCurrentTimer();
 private:
 	class Call
 	{
