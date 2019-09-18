@@ -39,3 +39,27 @@ void Restart::MakeActive() {
 
 	call->_active = true;
 }
+
+bool Restart::MouseDown(const IPoint& mouse_pos) {
+	
+	if (Core::mainInput.GetMouseRightButton())
+	{
+		if (!call->_active) return false;
+
+		IRect rect = call->_tex->getBitmapRect();
+		call->_rect = IRect(call->_position.x - rect.width * 0.5f, call->_position.y - rect.height * 0.5f, rect.width, rect.height);
+		if (call->_rect.Contains(mouse_pos))
+			return true;
+	}
+	return false;
+}
+
+void Restart::MakeDisactive() {
+
+	call->_active = false;
+}
+
+bool Restart::IsActive() {
+
+	return call->_active;
+}

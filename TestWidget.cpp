@@ -30,18 +30,8 @@ void TestWidget::Init()
 	_cannon = Cannon::createSprite(Core::resourceManager.Get<Render::Texture>("Cannon"), IPoint(Render::device.Width() * 0.5f, 50), 1.0f);
 	_aim = Aim::CreateSprite(Core::resourceManager.Get<Render::Texture>("Aim"));
 
+	CreateTargets();
 	
-	for (int i = 0; i < 1; i++) {
-		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("YellowTarget"),
-			IPoint(RandomGenerate::RandomInteger(Render::device.Width()), RandomGenerate::RandomInteger(Render::device.Height())),
-			IPoint(RandomGenerate::RandomVector(), RandomGenerate::RandomVector())));
-		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("PinkTarget"),
-			IPoint(RandomGenerate::RandomInteger(Render::device.Width()), RandomGenerate::RandomInteger(Render::device.Height())),
-			IPoint(RandomGenerate::RandomVector(), RandomGenerate::RandomVector())));
-		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("Bomb"),
-			IPoint(RandomGenerate::RandomInteger(Render::device.Width()), RandomGenerate::RandomInteger(Render::device.Height())),
-			IPoint(RandomGenerate::RandomVector(), RandomGenerate::RandomVector())));
-	}
 
 	fuck = Core::resourceManager.Get<Render::Texture>("YellowTarget");
 }
@@ -86,19 +76,19 @@ void TestWidget::Update(float dt)
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
 {
 	if (_running) {
-		_cannonballs.push_back(Cannonball::createSprite(Core::resourceManager.Get<Render::Texture>("Cannonball"), IPoint(Render::device.Width() * 0.5f, 35)));
-		_cannonballs.back()->MoveTo(mouse_pos);
+		if (Core::mainInput.GetMouseLeftButton())
+		{
+			_cannonballs.push_back(Cannonball::createSprite(Core::resourceManager.Get<Render::Texture>("Cannonball"), IPoint(Render::device.Width() * 0.5f, 35)));
+			_cannonballs.back()->MoveTo(mouse_pos);
+		}
 	}
 	return false;
 
 }
 
-void TestWidget::MouseMove(const IPoint &mouse_pos)
-{
-	if (_running) {
-		_cannon->Rotate();
-	}
+void TestWidget::MouseMove(const IPoint &mouse_pos){
 
+		_cannon->Rotate();
 }
 
 void TestWidget::MouseUp(const IPoint &mouse_pos)
@@ -114,6 +104,11 @@ void TestWidget::AcceptMessage(const Message & message){
 	if (data == "StopGame") {
 		_running = false;
 		_targets.clear();
+		_cannonballs.clear();
+	}
+	else if (data == "RestartGame") {
+		_running = true;
+		CreateTargets();
 	}
 
 }
@@ -151,5 +146,19 @@ void TestWidget::ObjectsRemoving() {
 }
 
 
+void TestWidget::CreateTargets() {
+	
+	for (int i = 0; i < 1; i++) {
+		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("YellowTarget"),
+			IPoint(RandomGenerate::RandomInteger(Render::device.Width()), RandomGenerate::RandomInteger(Render::device.Height())),
+			IPoint(RandomGenerate::RandomVector(), RandomGenerate::RandomVector())));
+		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("PinkTarget"),
+			IPoint(RandomGenerate::RandomInteger(Render::device.Width()), RandomGenerate::RandomInteger(Render::device.Height())),
+			IPoint(RandomGenerate::RandomVector(), RandomGenerate::RandomVector())));
+		_targets.push_back(Targets::createSprite(Core::resourceManager.Get<Render::Texture>("Bomb"),
+			IPoint(RandomGenerate::RandomInteger(Render::device.Width()), RandomGenerate::RandomInteger(Render::device.Height())),
+			IPoint(RandomGenerate::RandomVector(), RandomGenerate::RandomVector())));
+	}
 
+}
 

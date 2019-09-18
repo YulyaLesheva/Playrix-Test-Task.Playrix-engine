@@ -39,9 +39,11 @@ void Timer::Update(float dt) {
 }
 
 void Timer::ResetTimer() {
-	
+	if(!call->_active){
 	call->_active = true;
-	call->_time = 0;
+	call->_time = 30;
+	}
+
 }
 
 void Timer::makeDisactive() {

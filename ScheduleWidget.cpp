@@ -49,3 +49,14 @@ void ScheduleWidget::AcceptMessage(const Message & message){
 	}
 }
 
+bool ScheduleWidget::MouseDown(const IPoint & mouse_pos){
+	if (_restart->MouseDown(mouse_pos)) {
+		_restart->MakeDisactive();
+		///_score->IncreaseScore(1000);
+		_score->ResetScore();
+		_timer->ResetTimer();
+		Core::guiManager.getLayer("TestLayer")->getWidget("TestWidget")->AcceptMessage(Message("RestartGame", "RestartGame"));
+	}
+	return false;
+}
+

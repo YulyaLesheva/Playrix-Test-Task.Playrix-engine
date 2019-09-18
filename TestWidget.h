@@ -23,6 +23,7 @@ public:
 	void MouseUp(const IPoint& mouse_pos) override;
 	void AcceptMessage(const Message& message) override;
 	void CheckCollisions();
+	void CreateTargets();
 	bool _running;
 	std::unique_ptr <Background> _bg;
 	std::unique_ptr <StaticObjects> _stand;

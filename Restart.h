@@ -9,6 +9,10 @@ public:
 	void Draw();
 	void Update(float dt);
 	void MakeActive();
+	void MakeDisactive();
+	bool MouseDown(const IPoint& mouse_pos);
+	bool IsActive();
+
 private:
 	class Call
 	{
@@ -16,6 +20,7 @@ private:
 		IPoint _position;
 		Render::Texture* _tex;
 		bool _active;
+		IRect _rect;
 
 	};
 	std::unique_ptr <Call> call;
