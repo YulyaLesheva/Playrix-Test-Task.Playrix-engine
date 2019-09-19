@@ -12,6 +12,7 @@ public:
 	IRect GetRectangle();
 	void MakeNeedToRemoveTrue();
 	bool IsNeededToRemove() const;
+	FPoint GetCurrentPosition();
 
 private:
 	class Call

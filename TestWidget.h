@@ -10,6 +10,7 @@ class Targets;
 class Cannon;
 class Cannonball;
 class Aim;
+class Effect;
 
 class TestWidget : public GUI::Widget
 {
@@ -30,10 +31,13 @@ public:
 	std::unique_ptr <StaticObjects> _clock;
 	std::unique_ptr <Cannon> _cannon;
 	std::unique_ptr <Aim> _aim;
-
+	std::unique_ptr <Effect> _effect;
 
 	Render::Texture* fuck;
 	void ObjectsRemoving();
+
+	EffectsContainer _effCont;
+	ParticleEffectPtr _eff;
 
 private:
 	void Init();

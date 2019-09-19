@@ -79,3 +79,8 @@ void Cannonball::MakeNeedToRemoveTrue() {
 bool Cannonball::IsNeededToRemove() const {
 	return call->_needToRemove;
 }
+
+FPoint Cannonball::GetCurrentPosition() {
+
+	return call->_position;
+}

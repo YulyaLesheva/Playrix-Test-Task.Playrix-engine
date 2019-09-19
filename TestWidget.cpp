@@ -7,11 +7,13 @@
 #include "Cannon.h"
 #include "Cannonball.h"
 #include "Aim.h"
+#include "Effect.h"
 
 
 TestWidget::TestWidget(const std::string& name, rapidxml::xml_node<>* elem)
 	: Widget(name),
-	_running(true)
+	_running(true),
+	_eff(NULL)
 {
 	Init();
 }
@@ -21,6 +23,9 @@ TargetVector _targets;
 
 using CannonballVector = std::vector<std::unique_ptr<Cannonball>>;
 CannonballVector _cannonballs;
+
+using EffectVector = std::vector<std::unique_ptr<Effect>>;
+EffectVector _effects;
 
 void TestWidget::Init()
 {
@@ -56,6 +61,12 @@ void TestWidget::Draw()
 	Render::BindFont("arial");
 	Render::PrintString(924 + 100 / 2, 35, utils::lexical_cast(mouse_pos.x) + ", " + utils::lexical_cast(mouse_pos.y), 1.f, CenterAlign);
 
+	///_effCont.Draw();
+
+	for (auto& eff : _effects) {
+		eff->Draw();
+	}
+
 }
 
 void TestWidget::Update(float dt)
@@ -68,9 +79,14 @@ void TestWidget::Update(float dt)
 		cannonball->Update(dt);
 	}
 
+	for (auto& eff : _effects) {
+		eff->Update(dt);
+	}
+
 	CheckCollisions();
 
 	ObjectsRemoving();
+	///_effCont.Update(dt);
 }
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
@@ -80,6 +96,7 @@ bool TestWidget::MouseDown(const IPoint &mouse_pos)
 		{
 			_cannonballs.push_back(Cannonball::createSprite(Core::resourceManager.Get<Render::Texture>("Cannonball"), IPoint(Render::device.Width() * 0.5f, 35)));
 			_cannonballs.back()->MoveTo(mouse_pos);
+
 		}
 	}
 	return false;
@@ -122,7 +139,11 @@ void TestWidget::CheckCollisions() {
 				cannonball->MakeNeedToRemoveTrue();
 				(*i)->MakeNeedToRemoveTrue();
 				Core::guiManager.getLayer("TestLayer")->getWidget("ScheduleWidget")->AcceptMessage(Message("AddScore", "AddScore"));
-			
+				///_eff = _effCont.AddEffect("BigBoom", cannonball->GetCurrentPosition());
+				///_eff->Finish();
+				_effects.push_back(Effect::CreateEffect("BigBoom", cannonball->GetCurrentPosition()));
+				_effects.back()->FinishEffect();
+
 			}
 	}
 }
