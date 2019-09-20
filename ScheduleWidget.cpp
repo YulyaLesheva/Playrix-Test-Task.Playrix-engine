@@ -13,7 +13,7 @@ ScheduleWidget::ScheduleWidget(const std::string& name, rapidxml::xml_node<>* el
 
 void ScheduleWidget::Init() {
 	_score = Score::CreateScore(IPoint(70, 750));
-	_restart = Restart::CreateSprite(Core::resourceManager.Get<Render::Texture>("Restart"), IPoint(Render::device.Width() * 0.5f, 100));
+	_restart = Restart::CreateSprite(Core::resourceManager.Get<Render::Texture>("Restart"), IPoint(Render::device.Width() * 0.5f, Render::device.Height() * 0.5f));
 	_timer = Timer::CreateSprite(30, IPoint(975, 750));
 }
 

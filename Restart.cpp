@@ -25,7 +25,7 @@ void Restart::Draw() {
 		Render::device.PushMatrix();
 		Render::device.MatrixTranslate(call->_position.x, call->_position.y, 0);
 		///Render::device.MatrixScale(0.5f);
-		Render::device.MatrixTranslate(-call->_tex->_rect_width * 0.5f, 0, 0);
+		Render::device.MatrixTranslate(-call->_tex->_rect_width * 0.5f, -call->_tex->_rect_height * 0.5f, 0);
 		call->_tex->Draw();
 		Render::device.PopMatrix();
 	}

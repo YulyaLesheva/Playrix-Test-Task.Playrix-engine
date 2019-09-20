@@ -27,6 +27,9 @@ CannonballVector _cannonballs;
 using EffectVector = std::vector<std::unique_ptr<Effect>>;
 EffectVector _effects;
 
+using EffectPlumeVector = std::vector<std::unique_ptr<Effect>>;
+EffectVector _plumeEffects;
+
 void TestWidget::Init()
 {
 	_bg = Background::createSprite(Core::resourceManager.Get<Render::Texture>("Background"));
@@ -67,6 +70,10 @@ void TestWidget::Draw()
 		eff->Draw();
 	}
 
+	for (auto& eff : _plumeEffects) {
+		eff->Draw();
+	}
+
 }
 
 void TestWidget::Update(float dt)
@@ -83,6 +90,10 @@ void TestWidget::Update(float dt)
 		eff->Update(dt);
 	}
 
+	for (auto& eff : _plumeEffects) {
+		eff->Update(dt);
+	}
+
 	CheckCollisions();
 
 	ObjectsRemoving();
@@ -91,12 +102,17 @@ void TestWidget::Update(float dt)
 
 bool TestWidget::MouseDown(const IPoint &mouse_pos)
 {
+	
 	if (_running) {
 		if (Core::mainInput.GetMouseLeftButton())
 		{
+			if (mouse_pos.y <= 50) return false;
+
 			_cannonballs.push_back(Cannonball::createSprite(Core::resourceManager.Get<Render::Texture>("Cannonball"), IPoint(Render::device.Width() * 0.5f, 35)));
 			_cannonballs.back()->MoveTo(mouse_pos);
-
+			
+			_plumeEffects.push_back(Effect::CreateEffect("Iskra", _cannonballs.back()->GetCurrentPosition()));
+			_plumeEffects.back()->MoveTo(mouse_pos);
 		}
 	}
 	return false;
@@ -126,6 +142,8 @@ void TestWidget::AcceptMessage(const Message & message){
 	else if (data == "RestartGame") {
 		_running = true;
 		CreateTargets();
+		_effects.clear();
+		_plumeEffects.clear();
 	}
 
 }
@@ -143,7 +161,7 @@ void TestWidget::CheckCollisions() {
 				///_eff->Finish();
 				_effects.push_back(Effect::CreateEffect("BigBoom", cannonball->GetCurrentPosition()));
 				_effects.back()->FinishEffect();
-
+				_plumeEffects.back()->FinishEffect();
 			}
 	}
 }

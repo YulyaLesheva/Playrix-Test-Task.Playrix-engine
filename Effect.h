@@ -9,6 +9,8 @@ public:
 	void Draw();
 	void Update(float dt);
 	void FinishEffect();
+	bool MoveTo(const IPoint &mouse_pos);
+	
 private:
 	class Call
 	{
@@ -16,7 +18,8 @@ private:
 		FPoint _position;
 		EffectsContainer _effCont;
 		ParticleEffectPtr _eff;
-		char _name;
+		FPoint _dt;
+		FPoint _startPosition, _scalePix;
 	};
 	std::unique_ptr <Call> call;
 };
