@@ -26,7 +26,7 @@ void Aim::Update(float dt) {
 
 }
 
-std::unique_ptr<Aim> Aim::CreateSprite(Render::Texture *tex)
-{
+std::unique_ptr<Aim> Aim::CreateSprite(Render::Texture *tex){
+
 	return std::make_unique<Aim>(tex);
 }

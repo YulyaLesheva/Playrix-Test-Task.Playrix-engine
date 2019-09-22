@@ -10,28 +10,34 @@ class Cannon;
 class Cannonball;
 class Aim;
 class Effect;
-
+class StaticObjects;
 class TestWidget : public GUI::Widget
 {
 public:
 	TestWidget(const std::string& name, rapidxml::xml_node<>* elem);
-	IPoint fuckPosition;
+	
 	void Draw() override;
 	void Update(float dt) override;
-	bool MouseDown(const IPoint& mouse_pos) override;
 	void MouseMove(const IPoint& mouse_pos) override;
 	void MouseUp(const IPoint& mouse_pos) override;
 	void AcceptMessage(const Message& message) override;
+
+	bool MouseDown(const IPoint& mouse_pos) override;
+
+private:
+	void Init();
 	void CheckCollisions();
 	void CreateTargets();
+	void ObjectsRemoving();
+
 	bool _running;
+
 	std::unique_ptr <Background> _bg;
 	std::unique_ptr <Cannon> _cannon;
 	std::unique_ptr <Aim> _aim;
 	std::unique_ptr <Effect> _effect;
+	std::unique_ptr <StaticObjects> _stand;
 
-	void ObjectsRemoving();
-	
 	using PinkTargetVector = std::vector<std::unique_ptr<Targets>>;
 	PinkTargetVector _pinkTargets;
 
@@ -49,13 +55,4 @@ public:
 
 	using EffectPlumeVector = std::vector<std::unique_ptr<Effect>>;
 	EffectVector _plumeEffects;
-	
-	EffectsContainer _effCont;
-	ParticleEffectPtr _eff;
-
-private:
-	void Init();
-
-private:
-
 };

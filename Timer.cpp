@@ -14,7 +14,6 @@ Timer::Timer(int time, IPoint position) {
 	call->eventTimer = 1.f;
 	call->currentCounter = 0.f;
 	call->_active = true;
-
 }
 
 Timer::~Timer() {
@@ -39,11 +38,11 @@ void Timer::Update(float dt) {
 }
 
 void Timer::ResetTimer() {
+	
 	if(!call->_active){
 	call->_active = true;
-	call->_time = 30;
+	call->_time = 20;
 	}
-
 }
 
 void Timer::makeDisactive() {

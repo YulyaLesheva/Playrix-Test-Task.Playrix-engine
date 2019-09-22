@@ -2,10 +2,12 @@
 #include "Cannon.h"
 
 std::unique_ptr<Cannon> Cannon::createSprite(Render::Texture * tex, IPoint position, float angle) {
+	
 	return std::make_unique<Cannon>(tex, position, angle);
 }
 
 Cannon::Cannon(Render::Texture* tex, IPoint position, float angle) {
+	
 	call = std::unique_ptr<Call>(new Call);
 	call->_tex = tex;
 	call->_position = position;
@@ -33,8 +35,6 @@ void Cannon::Update(float dt) {
 }
 
 bool Cannon::MouseDown() {
-
-	///IPoint mouse_pos = Core::mainInput.GetMousePos();
 
 	if (Core::mainInput.GetMouseRightButton())
 	{

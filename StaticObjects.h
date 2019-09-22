@@ -16,8 +16,6 @@ private:
 		Render::Texture* _tex;
 		IPoint _position;
 		float _scale;
-	private:
-		
 	};
 	
 	std::unique_ptr<Call> call;

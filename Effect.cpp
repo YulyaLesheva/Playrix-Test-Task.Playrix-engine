@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Effect.h"
 
-std::unique_ptr<Effect> Effect::CreateEffect(std::string name, FPoint position)
-{
+std::unique_ptr<Effect> Effect::CreateEffect(std::string name, FPoint position){
+	
 	return std::make_unique<Effect>(name, position);
 }
 
@@ -15,11 +15,10 @@ Effect::Effect(std::string name, FPoint position) {
 }
 
 Effect::~Effect() {
-
-
 }
 
 void Effect::Draw() {
+	
 	call->_effCont.Draw();
 }
 
@@ -31,6 +30,7 @@ void Effect::Update(float dt) {
 }
 
 void Effect::FinishEffect() {
+	
 	call->_eff->Finish();
 }
 

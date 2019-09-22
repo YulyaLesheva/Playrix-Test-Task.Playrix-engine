@@ -23,7 +23,7 @@ void Cannonball::Draw() {
 	
 	Render::device.PushMatrix();
 	Render::device.MatrixTranslate(call->_position.x, call->_position.y, 0);
-	Render::device.MatrixScale(0.25);
+	Render::device.MatrixScale(0.2);
 	Render::device.MatrixTranslate(-call->_tex->_rect_width * 0.5, -call->_tex->_rect_height * 0.5, 0);
 	call->_tex->Draw();
 	Render::device.PopMatrix();
@@ -73,10 +73,12 @@ IRect Cannonball::GetRectangle() {
 
 
 void Cannonball::MakeNeedToRemoveTrue() {
+	
 	call->_needToRemove = true;
 }
 
 bool Cannonball::IsNeededToRemove() const {
+	
 	return call->_needToRemove;
 }
 
